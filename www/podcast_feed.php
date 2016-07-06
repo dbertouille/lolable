@@ -20,19 +20,18 @@
 <?php
 	include('db_access.php');
 	db_connect();
-	
-	$podcasts = mysql_query("SELECT * FROM podcasts ORDER BY date_posted DESC");
-	$num_podcasts =mysql_numrows($podcasts);
-	
-	for ( $i  = 0; $i < $num_podcasts; $i++)
+	global $conn;
+
+	$podcasts = mysqli_query($conn, "SELECT * FROM podcasts ORDER BY date_posted DESC");
+	while ( $row = mysqli_fetch_array($podcasts, MYSQLI_ASSOC))
 	{
-		$podcast_title = mysql_result($podcasts, $i, "title");
-		$podcast_desc = mysql_result($podcasts, $i, "description");
-		$podcast_file = "podcasts/" . mysql_result($podcasts,$i,'file');
+		$podcast_title = $row["title"];
+		$podcast_desc = $row["description"];
+		$podcast_file = "podcasts/" . $row['file'];
 		$podcast_url= 'http://www.lolablecomics.com/' . $podcast_file;
-		$podcast_posted_date = mysql_result($podcasts, $i, 'date_posted');
+		$podcast_posted_date = $row['date_posted'];
 		$podcast_filesize = filesize($podcast_file);
-		$podcast_duration_seconds = mysql_result($podcasts, $i, 'runtime');
+		$podcast_duration_seconds = $row['runtime'];
 		$podcast_duration = (int)($podcast_duration_seconds / 60 ) . ':' . $podcast_duration_seconds % 60;
 		
 		echo	'<item>

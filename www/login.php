@@ -9,7 +9,8 @@
 	{
 		include_once('db_access.php');
 		db_connect();
-		
+		global $conn;
+
 		$username = htmlspecialchars($_POST['username']);
 		$pass = htmlspecialchars($_POST['password']);
 		if(isset($_POST['remember']))
@@ -19,24 +20,26 @@
 		
 		$query = "SELECT * FROM users WHERE screen_name='" . $username . "' AND password=MD5('" . $pass . "')";
 		
-		$result = mysql_query($query);
+		$result = mysqli_query($conn, $query);
 		
-		if(mysql_numrows($result) == 0)
+		if(mysqli_num_rows($result) == 0)
 			$er = "Incorrect username or password";
-		else if(mysql_result($result,0,"validated") == 0)
-			$er = "Account not yet validated</br>Check your E-mail";
-		else if(mysql_numrows($result) == 1)//success
-		{
-
-			$_SESSION['curr_user_id'] = mysql_result($result,0,"user_id");
-			$_SESSION['curr_user_email'] = mysql_result($result,0,"email");
-			$_SESSION['curr_user_screen_name'] = mysql_result($result,0,"screen_name");
-			$_SESSION['curr_user_is_admin'] = mysql_result($result,0,"admin");
-			
-
-		}
 		else
-			$er = "ERROR #1000";
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+		if ( isset($row))
+		{
+			if ((int)$row["validated"] == 0)
+				$er = "Account not yet validated</br>Check your E-mail";
+			else
+			{
+				$_SESSION['curr_user_id'] = $row["user_id"];
+				$_SESSION['curr_user_email'] = $row["email"];
+				$_SESSION['curr_user_screen_name'] = $row["screen_name"];
+				$_SESSION['curr_user_is_admin'] = $row["admin"];
+			
+			}
+		}
 		
 		if($er != '')
 			show_form($er,$username);

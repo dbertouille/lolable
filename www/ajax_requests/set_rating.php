@@ -10,13 +10,15 @@
 		{
 			include('../db_access.php');
 			db_connect();
+
+			global $conn;
 			
 			//check if comic exists
-			$result = mysql_query('SELECT * FROM comics WHERE comic_num=' . $comic);
+			$result = mysqli_query($conn, 'SELECT * FROM comics WHERE comic_num=' . $comic);
 			
-			if(mysql_numrows($result) != 0)
+			if(mysqli_num_rows($result) != 0)
 			{
-				mysql_query("REPLACE INTO ratings(ip,comic_num,rating) VALUES(INET_ATON('" . $ip . "')," .$comic . ',' . $rating . ')');
+				mysqli_query($conn, "REPLACE INTO ratings(ip,comic_num,rating) VALUES(INET_ATON('" . $ip . "')," .$comic . ',' . $rating . ')');
 			}
 			
 			db_close();

@@ -104,7 +104,9 @@
 					</td>
 					<td valign="top" align="right">
 						<?php
-							$title = mysql_result(mysql_query("SELECT comic_name FROM comics WHERE comic_num=" . $_SESSION['CURR_COMIC']),0,"comic_name");
+							global $conn;
+							$result = mysqli_query($conn, "SELECT comic_name FROM comics WHERE comic_num=" . $_SESSION['CURR_COMIC']);
+							$title = mysqli_fetch_row($result)[0];
 							echo '<a href="http://www.reddit.com/submit?url=http://www.lolablecomics.com/index.php?comic=' . $_SESSION['CURR_COMIC'] . '&title=' . $title . ' [comic]" target="_blank"><img src="images/reddit.png"/></a>';
 						?>
 					</td>
@@ -267,24 +269,27 @@
 	
 	function showComic($num)
 	{
+			global $conn;
 			$_SESSION['CURR_COMIC'] = $num;
 			
-			$result = mysql_query("SELECT file FROM comics WHERE comic_num=" . $num);
+			$result = mysqli_query($conn, "SELECT file FROM comics WHERE comic_num=" . $num);
 			
-			if(mysql_numrows($result) == 0)
+			if(mysqli_num_rows($result) == 0)
 				showError();
 			else
-				echo '<img src="comics/' . mysql_result($result,0,"file") . '"/>';
+				echo '<img src="comics/' . mysqli_fetch_row($result)[0] . '"/>';
 				
 	}
 	
 	function showDescription()
 	{
-		$result = mysql_query("SELECT comic_description FROM comics WHERE comic_num=" . $_SESSION['CURR_COMIC']);
-		if(mysql_numrows($result) == 0)
+		global $conn;
+
+		$result = mysqli_query($conn, "SELECT comic_description FROM comics WHERE comic_num=" . $_SESSION['CURR_COMIC']);
+		if(mysqli_num_rows($result) == 0)
 			echo "Error, could not find description";
 		else
-			echo '<font size="3">' . mysql_result($result,0,"comic_description") . '</font>';
+			echo '<font size="3">' . mysqli_fetch_row($result)[0];
 	}
 	
 	function showRating()
@@ -350,10 +355,9 @@
 
 	function getLatest()
 	{
-		$result = mysql_query("SELECT MAX(comic_num) FROM comics");
-		
-		return mysql_result($result,0,"MAX(comic_num)");
-		
+		global $conn;
+		$result = mysqli_query($conn, "SELECT MAX(comic_num) FROM comics");
+		return mysqli_fetch_row($result)[0];
 	}
 	
 	function showError()

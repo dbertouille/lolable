@@ -25,18 +25,19 @@
 				
 				db_connect();
 				
+				global $conn;
 
 				
 				if(isset($_GET["orderby"]) && $_GET["orderby"] == "date")
 				{
 					if(isset($_GET["order"]) && $_GET["order"] == "asc")
 					{
-						$result = mysql_query("SELECT * FROM comics ORDER BY date ASC");
+						$result = mysqli_query($conn, "SELECT * FROM comics ORDER BY date ASC");
 						print_table_headers('date','asc');
 					}
 					else
 					{
-						$result = mysql_query("SELECT * FROM comics ORDER BY date DESC");
+						$result = mysqli_query($conn, "SELECT * FROM comics ORDER BY date DESC");
 						print_table_headers('date','desc');
 					}
 				}
@@ -44,12 +45,12 @@
 				{
 					if(isset($_GET["order"]) && $_GET["order"] == "desc")
 					{
-						$result = mysql_query("SELECT * FROM comics ORDER BY comic_name DESC");
+						$result = mysqli_query($conn, "SELECT * FROM comics ORDER BY comic_name DESC");
 						print_table_headers('title','desc');
 					}
 					else
 					{
-						$result = mysql_query("SELECT * FROM comics ORDER BY comic_name");
+						$result = mysqli_query($conn, "SELECT * FROM comics ORDER BY comic_name");
 						print_table_headers('title','asc');
 					}
 				}
@@ -57,13 +58,13 @@
 				{
 					if(isset($_GET["order"]) && $_GET["order"] == "asc")
 					{
-						$result = mysql_query("SELECT * FROM comics LEFT JOIN((SELECT AVG(rating) AS average,comic_num FROM ratings GROUP BY(comic_num)) AS r) ON(comics.comic_num = r.comic_num) ORDER BY average ASC");
+						$result = mysqli_query($conn, "SELECT * FROM comics LEFT JOIN((SELECT AVG(rating) AS average,comic_num FROM ratings GROUP BY(comic_num)) AS r) ON(comics.comic_num = r.comic_num) ORDER BY average ASC");
 						print_table_headers('average_rating','asc');
 
 					}
 					else
 					{
-						$result = mysql_query("SELECT * FROM comics LEFT JOIN((SELECT AVG(rating) AS average,comic_num FROM ratings GROUP BY(comic_num)) AS r) ON(comics.comic_num = r.comic_num) ORDER BY average DESC");
+						$result = mysqli_query($conn, "SELECT * FROM comics LEFT JOIN((SELECT AVG(rating) AS average,comic_num FROM ratings GROUP BY(comic_num)) AS r) ON(comics.comic_num = r.comic_num) ORDER BY average DESC");
 						print_table_headers('average_rating','desc');
 					}
 				}
@@ -71,47 +72,45 @@
 				{
 					if(isset($_GET["order"]) && $_GET["order"] == "asc")
 					{
-						$result = mysql_query("SELECT * FROM comics LEFT JOIN(ratings) ON(ratings.comic_num = comics.comic_num && ratings.user_id=" . $_SESSION['curr_user_id'] . ") ORDER BY rating ASC");
+						$result = mysqli_query($conn, "SELECT * FROM comics LEFT JOIN(ratings) ON(ratings.comic_num = comics.comic_num && ratings.user_id=" . $_SESSION['curr_user_id'] . ") ORDER BY rating ASC");
 						print_table_headers('user_rating','asc');
 					}
 					else
 					{
-						$result = mysql_query("SELECT * FROM comics LEFT JOIN(ratings) ON(ratings.comic_num = comics.comic_num && ratings.user_id=" . $_SESSION['curr_user_id'] . ") ORDER BY rating DESC");
+						$result = mysqli_query($conn, "SELECT * FROM comics LEFT JOIN(ratings) ON(ratings.comic_num = comics.comic_num && ratings.user_id=" . $_SESSION['curr_user_id'] . ") ORDER BY rating DESC");
 						print_table_headers('user_rating','desc');
 					}
 				}
 				//default to date desc
 				else
 				{
-					$result = mysql_query("SELECT * FROM comics ORDER BY date DESC");
+					$result = mysqli_query($conn, "SELECT * FROM comics ORDER BY date DESC");
 					print_table_headers('date','desc');
 				}
 				
 				
 				echo '<tr height="10px"></tr>';
 				
-				$num_comics = mysql_numrows($result);
-				
-				for($i=0;$i<$num_comics;$i++)
+				while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 				{
-					$date_time = split(" ",mysql_result($result,$i,"date"));
+					$date_time = explode(" ", $row["date"]);
 					
 					echo '<tr>
 							<td>
 								' . $date_time[0] . '
 							</td>
 							<td>
-								<a style="color:black" href="?comic=' . mysql_result($result,$i,"comic_num") . '">' . mysql_result($result,$i,"comic_name") . '</a>
+								<a style="color:black" href="?comic=' . $row["comic_num"] . '">' . $row["comic_name"] . '</a>
 							</td>
 
 							<td>
-								' . get_stars(getAverageRating(mysql_result($result,$i,"comic_num"))) . '
+								' . get_stars(getAverageRating((int)$row["comic_num"])) . '
 							</td>';
 						
 					if(isset($_SESSION['curr_user_id']))
 					{
 						echo 	'<td>
-								' . get_stars(getUserRating(mysql_result($result,$i,"comic_num"))) . '
+								' . get_stars(getUserRating((int)$row["comic_num"])) . '
 							</td>';
 					}
 						

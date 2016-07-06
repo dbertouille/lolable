@@ -18,18 +18,21 @@
 					<?php
 						include_once("db_access.php");
 						db_connect();
+						global $conn;
 						
-						$result = mysql_query("SELECT * FROM podcasts ORDER BY date_posted DESC");
+						$result = mysqli_query($conn, "SELECT * FROM podcasts ORDER BY date_posted DESC");
 						
-						while($row = mysql_fetch_assoc($result))
+						while($row = mysqli_fetch_assoc($result))
 						{
-								$timestamp = mysql_result(mysql_query("SELECT UNIX_TIMESTAMP(date_posted) FROM podcasts WHERE id=" . $row['id']),0,0);
+								$subresult = mysqli_query($conn, "SELECT UNIX_TIMESTAMP(date_posted) FROM podcasts WHERE id=" . (int)$row['id']);
+								$timestamp = mysqli_fetch_row($subresult)[0];
 								echo 	'<tr>
 										<td valign="bottom">
 											' . $row['title'] . '
 										</td>
 										<td valign="bottom">
 											<font size="1"><i>' . date("M-d-Y",$timestamp) . '</i></font>
+
 										</td>
 										<td valign="bottom">
 											' . str_pad((int)($row['runtime']/60), 2, '0', STR_PAD_LEFT) . ':' . str_pad($row['runtime']%60, 2, '0', STR_PAD_LEFT) . '

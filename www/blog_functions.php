@@ -4,17 +4,18 @@ function display_blogs($limit, $start=0)
 	include_once('db_access.php'); //since it was likely included somewhere already
 	db_connect();
 	
-	$result = mysql_query("SELECT * FROM blogs JOIN(users) ON(blogs.user_id = users.user_id) ORDER BY time DESC LIMIT " . $start . ',' . $limit);
-	$num_blogs = mysql_numrows($result);
+	global $conn;
+
+	$result = mysqli_query($conn, "SELECT * FROM blogs JOIN(users) ON(blogs.user_id = users.user_id) ORDER BY time DESC LIMIT " . $start . ',' . $limit);
 	
-	for($i=0;$i<$num_blogs;$i++)
+	while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 	{
-		$blog["time"] = mysql_result($result,$i,"time");
-		$blog["screen_name"] = mysql_result($result,$i,"screen_name");
-		$blog["avatar"] = mysql_result($result,$i,"avatar");
-		$blog["title"] = mysql_result($result,$i,"title");
-		$blog["blog"] = mysql_result($result,$i,"blog");
-		$blog["id"] = mysql_result($result,$i,"id");
+		$blog["time"] = $row["time"];
+		$blog["screen_name"] = $row["screen_name"];
+		$blog["avatar"] = $row["avatar"];
+		$blog["title"] = $row["title"];
+		$blog["blog"] = $row["blog"];
+		$blog["id"] = $row["id"];
 		render_blog($blog);
 		
 	}
@@ -26,16 +27,19 @@ function display_blog($blog_id)
 {
 	include_once('db_access.php');
 	db_connect();
+
+	global $conn;
 	
-	$result = mysql_query("SELECT * FROM blogs JOIN(users) ON(blogs.user_id = users.user_id) WHERE blogs.id = " . $blog_id . " LIMIT 1");
-	if(mysql_numrows($result) == 1)
+	$result = mysqli_query($conn, "SELECT * FROM blogs JOIN(users) ON(blogs.user_id = users.user_id) WHERE blogs.id = " . $blog_id . " LIMIT 1");
+	if(mysqli_num_rows($result) == 1)
 	{
-		$blog["time"] = mysql_result($result,0,"time");
-		$blog["screen_name"] = mysql_result($result,0,"screen_name");
-		$blog["avatar"] = mysql_result($result,0,"avatar");
-		$blog["title"] = mysql_result($result,0,"title");
-		$blog["blog"] = mysql_result($result,0,"blog");
-		$blog["id"] = mysql_result($result,0,"id");
+		$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		$blog["time"] = $row["time"];
+		$blog["screen_name"] = $row["screen_name"];
+		$blog["avatar"] = $row["avatar"];
+		$blog["title"] = $row["title"];
+		$blog["blog"] = $row["blog"];
+		$blog["id"] = $row["id"];
 		render_blog($blog);
 	}
 	
@@ -44,7 +48,7 @@ function display_blog($blog_id)
 
 function render_blog($blog)
 {
-	$date_time = split(" ",$blog["time"]);
+	$date_time = explode(" ",$blog["time"]);
 	
 	echo	'<tr>
 			<td background="images/corner_top_left.png" height="40px">

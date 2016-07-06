@@ -17,9 +17,10 @@
 	
 	include_once('db_access.php'); //since it was likely included somewhere already
 	db_connect();
-	
-	$result = mysql_query("SELECT COUNT(*) FROM blogs");
-	$num_blogs = mysql_result($result,0,0);	
+	global $conn;
+
+	$result = mysqli_query($conn, "SELECT COUNT(*) FROM blogs");
+	$num_blogs = mysqli_fetch_row($result)[0];
 	db_close();
 	
 	$start = $page * $blogs_per_page;
