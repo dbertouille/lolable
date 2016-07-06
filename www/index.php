@@ -1,6 +1,7 @@
 <?php
 	if (!session_start())
 		echo "SESSION FAILED";
+	date_default_timezone_set('America/Winnipeg')
 ?>
 <html>
 <link rel="stylesheet" type="text/css" href="index.css" />
