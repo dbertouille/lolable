@@ -2,3 +2,23 @@ DIV.content
 {
 	align: center;
 }
+
+.menu {
+	background-color: black;
+}
+
+.menu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.menu li {
+	display: inline;
+	margin-right: 10px;
+}
+
+.menu a {
+	color: white;
+	text-decoration: none;
+}

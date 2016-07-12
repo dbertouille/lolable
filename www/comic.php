@@ -27,52 +27,28 @@
 	
 </div>
 
-
-
-
-
-<?php
-
-
-	if($_SESSION['CURR_COMIC']==1)
-	{
-		echo '<div class="bottom_bar">
-				<img name="comic_bot_bar" src="images/bot_bar_first.png" usemap="#botbarmap" border="0">
-			</div>
-			<map name="botbarmap">';
-			
-		echo '<area shape="rect" coords="415,0,485,19" href="?comic=random"  onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_random_first.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_first.png\')" />';
-		echo '<area shape="rect" coords="515,0,560,19" href="?comic=' . getNext() . '" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_next_first.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_first.png\')" />';
-		echo '<area shape="rect" coords="605,0,675,19" href="?" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_new_first.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_first.png\')" />';
-		echo '</map>';
-	}
-	else if($_SESSION['CURR_COMIC'] == getLatest())
-	{
-		echo '<div class="bottom_bar">
-				<img name="comic_bot_bar" src="images/bot_bar_last.png" usemap="#botbarmap" border="0">
-			</div>
-			<map name="botbarmap">';
-			
-		echo '<area shape="rect" coords="230,0,280,19" href="?comic=1" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_first_last.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_last.png\')" />';
-		echo '<area shape="rect" coords="340,0,380,19" href="?comic=' . getPrev() . '"  onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_back_last.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_last.png\')"/>';
-		echo '<area shape="rect" coords="415,0,485,19" href="?comic=random"  onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_random_last.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/bot_bar_last.png\')" />';
-		echo '</map>';
-	}
-	else
-	{
-		echo '<div class="bottom_bar">
-				<img name="comic_bot_bar" src="images/comic_bot_bar.png" usemap="#botbarmap" border="0">
-			</div>
-			<map name="botbarmap">';
-			
-		echo '<area shape="rect" coords="230,0,280,19" href="?comic=1" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_first.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/comic_bot_bar.png\')" />';
-		echo '<area shape="rect" coords="340,0,380,19" href="?comic=' . getPrev() . '"  onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_back.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/comic_bot_bar.png\')"/>';
-		echo '<area shape="rect" coords="415,0,485,19" href="?comic=random"  onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_random.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/comic_bot_bar.png\')" />';
-		echo '<area shape="rect" coords="515,0,560,19" href="?comic=' . getNext() . '" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_next.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/comic_bot_bar.png\')" />';
-		echo '<area shape="rect" coords="605,0,675,19" href="?" onmouseover="swap_image(\'comic_bot_bar\',\'images/highlight_newest.png\')" onmouseout="swap_image(\'comic_bot_bar\',\'images/comic_bot_bar.png\')" />';
-		echo '</map>';
-	}
-?>
+<div id="bottom_bar" class="menu">
+	<ul>
+	<?php
+		# Create all buttoms but hide which we don't want so we have a consistent layout and spacing
+		if ($_SESSION['CURR_COMIC'] == 1) {
+			$visibility = "hidden";
+		} else {
+			$visibility = "visible";
+		}
+		echo '<li><a href="?comic=1" style="visibility: ' . $visibility . '">First</a></li>';
+		echo '<li><a href="?comic=' . getPrev() . '" style="visibility: ' . $visibility . '">Back</a></li>';
+		echo '<li><a href="?comic=random">Random</a></li>';
+		if($_SESSION['CURR_COMIC'] == getLatest()) {
+			$visibility = "hidden";
+		} else {
+			$visibility = "visible";
+		}
+		echo '<li><a href="?comic=' . getNext() . '" style="visibility: ' . $visibility . '">Next</a></li>';
+		echo '<li><a href="?comic=' . getLatest() . '" style="visibility: '. $visibility . '">Newest</a></li>';
+	?>
+	</ul>
+</div>
 
 <table width="900px">
 	<tr>

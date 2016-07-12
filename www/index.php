@@ -32,20 +32,17 @@
 				</tr>
 			</table>
 		
-
-			<div class="top_bar">
-				<img name="comic_top_bar" src="images/top_bar.png" usemap="#topbarmap" border="0">
+	
+			<div class="menu">
+				<div class="top_bar">
+					<ul>
+						<li><a href="?action=about">About</a></li>
+						<li><a href="?action=archive">Archive</a></li>
+						<li><a href="?action=extras">Podcasts</a></li>
+					</ul>
+				</div>
 			</div>
-
-			<map name="topbarmap">
-				<area shape="rect" coords="180,0,240,25" href="?action=about" onmouseover="swap_image('comic_top_bar','images/highlight_about.png')" onmouseout="swap_image('comic_top_bar','images/top_bar.png')"  />
-				<area shape="rect" coords="270,0,340,25" href="?action=archive" onmouseover="swap_image('comic_top_bar','images/highlight_archive.png')" onmouseout="swap_image('comic_top_bar','images/top_bar.png')" />
-				<area shape="rect" coords="370,0,440,25" target="_blank" onmouseover="swap_image('comic_top_bar','images/highlight_forum.png')" onmouseout="swap_image('comic_top_bar','images/top_bar.png')" />
-				<area shape="rect" coords="480,0,510,25" href="?action=faq" onmouseover="swap_image('comic_top_bar','images/highlight_faq.png')" onmouseout="swap_image('comic_top_bar','images/top_bar.png')" />
-				<area shape="rect" coords="550,0,625,25" href="?action=contact" onmouseover="swap_image('comic_top_bar','images/highlight_contact.png')" onmouseout="swap_image('comic_top_bar','images/top_bar.png')" />
-				<area shape="rect" coords="660,0,720,25" href="?action=extras" onmouseover="swap_image('comic_top_bar','images/highlight_extras.png')" onmouseout="swap_images('comic_top_bar','images/top_bar.png')" />
-			</map>
-
+			
 			<?php
 				if(!isset($_GET['action']))
 					include("comic.php");
