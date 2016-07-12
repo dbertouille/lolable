@@ -14,6 +14,8 @@
 			    ini_get('mysqli.default_pw'),
 			    "lolable");
 		}
+
+		return $conn;
 	}
 	
 	function db_close()
