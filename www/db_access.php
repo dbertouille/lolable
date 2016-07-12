@@ -4,21 +4,26 @@
 		
 	function db_connect()
 	{
-		$dbhost = 'SETME';
-		$dbuser = 'SETME';
-		$dbpass = 'SETME';
-		$dbname = 'SETME';
+		global $conn;
 
 		if(!isset($conn))
 		{
-			$conn = mysql_connect($dbhost,$dbuser,$dbpass);
-			mysql_select_db($dbname);
+			$conn = mysqli_connect(
+			    '127.0.0.1',
+			    ini_get('mysqli.default_user'),
+			    ini_get('mysqli.default_pw'),
+			    "lolable");
 		}
 	}
 	
 	function db_close()
 	{
+		global $conn;
+
 		if(isset($conn))
-			mysql_close($conn);
+		{
+			mysqli_close($conn);
+			$conn = null;
+		}
 	}
 ?>
