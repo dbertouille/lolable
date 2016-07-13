@@ -1,5 +1,5 @@
 CREATE TABLE `comics` (
-  `comic_num` int(11) NOT NULL,
+  `comic_num` int NOT NULL,
   `comic_name` varchar(100) NOT NULL,
   `comic_description` varchar(500) NOT NULL,
   `file` varchar(100) NOT NULL,
