@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL AUTO_INCREMENT,
   `screen_name` varchar(30) NOT NULL,
   `password` varchar(200) NOT NULL,
   `email` varchar(50) NOT NULL,
