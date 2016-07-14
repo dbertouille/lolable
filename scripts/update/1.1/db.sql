@@ -4,6 +4,13 @@ ALTER TABLE podcasts ENGINE=INNODB;
 ALTER TABLE ratings ENGINE=INNODB;
 ALTER TABLE users ENGINE=INNODB;
 
+CREATE TABLE `announcements` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `announcement` text NOT NULL,
+  PRIMARY KEY `id` (`id`)
+);
 
 ALTER TABLE blogs MODIFY user_id INTEGER;
 ALTER TABLE blogs MODIFY id INTEGER UNSIGNED;
