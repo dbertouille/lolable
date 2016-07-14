@@ -115,8 +115,26 @@
 <div class="blog">
 
 <tr><td>
-	</br></br>	
-	<?php include('blog.php');?>
+</br></br>
+<table width="800px" align="center" cellspacing="0" cellpadding="0">
+<?php
+include('blog_functions.php');
+include_once('db_access.php');
+# Find related blogs (if any) and display them
+global $conn;
+
+$curr_comic = $_SESSION['CURR_COMIC'];
+$sql = <<<EOT
+  SELECT id FROM blogs
+  JOIN (users) ON (blogs.user_id = users.user_id)
+  WHERE comic_id = $curr_comic;
+EOT;
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_array($result)) {
+	display_blog($row[0]);
+}
+?>
+</table>
 </td></tr>
 </div>
 </table>
