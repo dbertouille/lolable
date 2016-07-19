@@ -31,6 +31,23 @@
 					</td>
 				</tr>
 			</table>
+
+			<div class="announcement">
+			<?php
+				include_once("db_access.php");
+				global $conn;
+				db_connect();
+				$result = mysqli_query($conn,
+				    "SELECT announcement FROM announcements " .
+				    "WHERE start_time < CURRENT_TIMESTAMP AND " .
+				    "end_time > CURRENT_TIMESTAMP " .
+				    "ORDER BY start_time DESC LIMIT 1");
+				$row = mysqli_fetch_array($result);
+				if ($row) {
+					echo "<table><tr><td><b>ANNOUNCENMENT:</b></td><td>" . $row[0] . "</td></tr></table>";
+				}
+			?>
+			</div>
 		
 	
 			<div class="menu">
