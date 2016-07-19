@@ -17,6 +17,11 @@
 		
 		<td background="images/white_alpha_43.png">
 			<table width="720px">
+                        <colgroup>
+                                <col span="1" style="width: 25%;">
+                                <col span="1" style="width: 50%;">
+                                <col span="1" style="width: 25%;">
+                        </colgroup>
 			<?php
 				
 				
